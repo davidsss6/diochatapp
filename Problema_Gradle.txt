@@ -1,0 +1,22 @@
+Configurar a versão mínima diretamente no local.properties
+
+Se mudar no Gradle causou outros erros, tente configurar o minSdkVersion diretamente no local.properties. Abra esse arquivo e adicione a linha:
+
+flutter.minSdkVersion=21
+
+
+Depois, no seu android/app/build.gradle, modifique a linha onde define minSdkVersion para:
+
+minSdkVersion localProperties.getProperty('flutter.minSdkVersion')?.toInteger() ?: 21
+
+
+
+Adicionar ao final do app/gradle
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        if (details.requested.group == 'org.jetbrains.kotlin' && details.requested.name.contains('kotlin-stdlib')) {
+            details.useVersion '1.8.22'
+        }
+    }
+}
